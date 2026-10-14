@@ -1,0 +1,7 @@
+<div class="flex flex-col gap-1">
+  <span class="font-display text-h1 font-bold leading-none">{{ display() }}</span>
+  <span class="font-display text-label font-bold uppercase tracking-[0.06em]">{{ label() }}</span>
+  @if (descricao()) {
+    <p class="max-w-[24ch] text-sm leading-relaxed opacity-80">{{ descricao() }}</p>
+  }
+</div>

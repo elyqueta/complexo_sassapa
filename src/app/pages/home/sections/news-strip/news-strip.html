@@ -1,0 +1,42 @@
+<section id="noticias" class="border-t border-line py-14 lg:py-16">
+  <div class="flex gap-4 lg:container lg:mx-auto lg:max-w-container lg:px-10">
+    <div class="hidden shrink-0 md:block">
+      <app-vertical-label label="Notícias" />
+    </div>
+
+    <div class="min-w-0 flex-1">
+      <div class="flex items-end justify-between gap-4 px-4 sm:px-6 lg:px-0">
+        <div>
+          <span class="block h-[3px] w-12 bg-accent" appReveal="fade" aria-hidden="true"></span>
+          <h2 appReveal="up" class="mt-4 font-display text-h2 font-bold text-ink">
+            Últimas do colégio
+          </h2>
+        </div>
+        <span class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3 lg:hidden">
+          {{ indice() + 1 }}/{{ noticias().length }}
+        </span>
+      </div>
+
+      @if (noticias().length) {
+        <div
+          id="faixa-noticias"
+          class="mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:px-6 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden"
+        >
+          @for (noticia of noticias(); track noticia.id) {
+            <app-news-card [noticia]="noticia" appReveal="up" [revealDelay]="$index * 80" />
+          }
+        </div>
+      } @else {
+        <div class="mt-8 grid gap-6 px-4 sm:px-6 lg:grid-cols-4 lg:px-0" aria-hidden="true">
+          @for (_ of [1, 2, 3, 4]; track $index) {
+            <div class="flex flex-col gap-4">
+              <div class="aspect-[3/2] animate-pulse rounded-md bg-surface-soft"></div>
+              <div class="h-4 w-3/4 animate-pulse rounded bg-surface-soft"></div>
+              <div class="h-3 w-full animate-pulse rounded bg-surface-soft"></div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>

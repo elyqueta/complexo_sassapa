@@ -1,0 +1,26 @@
+<nav
+  aria-label="Navegação por secções"
+  class="fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-4 lg:flex"
+>
+  @for (seccao of seccoes(); track seccao.id; let i = $index) {
+    <button
+      type="button"
+      class="group flex items-center justify-center transition-transform duration-fast ease-out motion-reduce:transition-none"
+      [attr.aria-label]="seccao.label"
+      [attr.aria-current]="i === activo() ? 'true' : null"
+      (click)="irPara(seccao.id)"
+    >
+      @if (i === activo()) {
+        <span
+          class="flex h-11 w-11 items-center justify-center rounded-full bg-surface text-accent shadow-float"
+        >
+          <app-icon [name]="seccao.icon" />
+        </span>
+      } @else {
+        <span
+          class="h-2.5 w-2.5 rounded-full border border-ink-3 transition-colors duration-fast ease-out group-hover:border-ink motion-reduce:transition-none"
+        ></span>
+      }
+    </button>
+  }
+</nav>

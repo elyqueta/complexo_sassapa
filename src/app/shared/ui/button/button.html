@@ -1,0 +1,22 @@
+@if (routerLink()) {
+  <a [routerLink]="routerLink()" [class]="classes" class="no-underline">
+    <ng-content />
+    @if (arrow()) {
+      <app-icon name="arrow-right" class="transition-transform duration-fast ease-out group-hover:translate-x-1 motion-reduce:transition-none" />
+    }
+  </a>
+} @else if (href()) {
+  <a [href]="href()" [class]="classes" class="no-underline">
+    <ng-content />
+    @if (arrow()) {
+      <app-icon name="arrow-right" class="transition-transform duration-fast ease-out group-hover:translate-x-1 motion-reduce:transition-none" />
+    }
+  </a>
+} @else {
+  <button type="button" [class]="classes">
+    <ng-content />
+    @if (arrow()) {
+      <app-icon name="arrow-right" class="transition-transform duration-fast ease-out group-hover:translate-x-1 motion-reduce:transition-none" />
+    }
+  </button>
+}

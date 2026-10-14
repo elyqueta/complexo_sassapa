@@ -1,0 +1,48 @@
+<section
+  id="inicio"
+  class="relative flex min-h-[100svh] items-center pb-16 pt-[calc(var(--spacing-header)+3rem)] lg:pt-[calc(var(--spacing-header)+4rem)]"
+>
+  <app-topo-pattern class="pointer-events-none absolute -right-24 top-28 hidden h-96 w-96 lg:block" />
+
+  <app-container class="relative">
+    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <span class="block font-display text-h1 font-bold leading-none text-accent" aria-hidden="true"
+          >&ldquo;</span
+        >
+        <h1 class="mt-1 font-display text-hero font-bold text-ink">
+          @for (linha of tituloLinhas; track linha) {
+            <span class="block overflow-hidden">
+              <span class="block" appReveal="up" [revealDelay]="$index * 80">{{ linha }}</span>
+            </span>
+          }
+        </h1>
+        <p appReveal="up" [revealDelay]="280" class="mt-6 max-w-prose leading-relaxed text-ink-2">
+          Um colégio angolano que acompanha cada aluno do pré-escolar ao Ensino Médio, com ensino de
+          qualidade, professores dedicados e valores que formam cidadãos.
+        </p>
+        <div appReveal="up" [revealDelay]="360" class="mt-8 flex flex-wrap gap-4">
+          <app-button variant="ghost" routerLink="/sobre">Conhecer o colégio</app-button>
+          <app-button variant="primary" routerLink="/inscricoes">Fazer inscrição</app-button>
+        </div>
+      </div>
+
+      <div appReveal="scale" class="relative order-first lg:order-none">
+        <div class="relative overflow-hidden rounded-lg shadow-card">
+          <app-media-image
+            #foto
+            [src]="heroImg"
+            alt="Alunos angolanos à entrada da escola, mochilas às costas"
+            aspect="portrait"
+            [priority]="true"
+            sizes="(max-width: 1023px) 100vw, 45vw"
+          />
+          <span
+            class="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-surface to-transparent"
+            aria-hidden="true"
+          ></span>
+        </div>
+      </div>
+    </div>
+  </app-container>
+</section>

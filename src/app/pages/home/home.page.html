@@ -1,0 +1,8 @@
+<div class="lg:snap-y lg:snap-proximity">
+  <app-home-hero class="lg:snap-start" />
+  <app-news-strip [noticias]="noticias()" />
+  <app-agenda [eventos]="eventos()" />
+  <app-video-section />
+  <app-stats-section [estatisticas]="estatisticas()" />
+</div>
+<app-section-dots [seccoes]="seccoes" />

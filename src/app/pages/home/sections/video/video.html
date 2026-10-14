@@ -1,0 +1,68 @@
+<section id="video" class="relative overflow-hidden py-16 lg:py-20">
+  <div class="absolute inset-0" aria-hidden="true">
+    <app-media-image [src]="fundoImg" alt="" aspect="wide" />
+    <span class="absolute inset-0 bg-gradient-to-b from-surface via-surface/85 to-surface"></span>
+  </div>
+
+  <div class="relative flex gap-6 lg:container lg:mx-auto lg:max-w-container lg:px-10">
+    <div class="hidden shrink-0 pl-4 md:block lg:pl-0">
+      <app-vertical-label label="Vídeo" />
+    </div>
+
+    <div class="min-w-0 flex-1 px-4 sm:px-6 lg:px-0">
+      <div class="flex flex-col items-center text-center">
+        <h2 appReveal="up" class="font-display text-h1 font-bold text-ink">
+          Conheça o Sassapa por dentro
+        </h2>
+        <p appReveal="up" [revealDelay]="80" class="mt-4 max-w-prose leading-relaxed text-ink-2">
+          Um percurso pelas salas de aula, laboratórios e actividades dos nossos alunos — do
+          pré-escolar ao Ensino Médio.
+        </p>
+
+        <!-- TODO(colégio): ficha real do vídeo (directora e duração) quando existir -->
+        <p
+          appReveal="up"
+          [revealDelay]="120"
+          class="mt-3 hidden font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3 lg:block"
+        >
+          Direcção pedagógica &middot; {{ video.duracao }}
+        </p>
+
+        <div appReveal="up" [revealDelay]="160" class="mt-10 w-full max-w-3xl">
+          <app-youtube-facade
+            [youtubeId]="video.youtubeId"
+            titulo="Conheça o Sassapa por dentro"
+            [poster]="posterImg"
+            posterAlt="Sala de aula numa escola de Kuito, Bié, Angola"
+          />
+        </div>
+      </div>
+
+      <ul class="mt-12 grid gap-6 sm:grid-cols-3" appRevealGroup>
+        @for (cartao of cartoes; track cartao.rota) {
+          <li>
+            <a [routerLink]="cartao.rota" class="group block no-underline">
+              <div class="relative overflow-hidden rounded-md">
+                <app-media-image
+                  [src]="cartao.imagem"
+                  [alt]="cartao.alt"
+                  aspect="landscape"
+                  sizes="(max-width: 1023px) 80vw, 30vw"
+                  class="transition-transform duration-base ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
+                />
+                <span class="absolute bottom-3 left-3">
+                  <app-category-tag [label]="cartao.categoria" tone="chip" />
+                </span>
+              </div>
+              <h3
+                class="mt-3 font-display text-h3 font-bold text-ink transition-colors duration-fast ease-out group-hover:text-accent motion-reduce:transition-none"
+              >
+                {{ cartao.titulo }}
+              </h3>
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>

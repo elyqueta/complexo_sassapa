@@ -1,3 +1,114 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+/* ============================================================
+   Tema do Sassapa — ÚNICA fonte de verdade para cores, tipografia
+   e tokens de movimento. Trocar a identidade = editar este bloco.
+   ============================================================ */
+@theme {
+  /* Superfícies (modo claro, fundo branco) */
+  --color-surface: #ffffff;
+  --color-surface-soft: #f7f5f2;
+  --color-surface-tint: #fff1e8;
+
+  /* Tinta (texto) */
+  --color-ink: #141414;
+  --color-ink-2: #4a4a4a;
+  --color-ink-3: #8a8a8a;
+
+  /* Linhas e bordas */
+  --color-line: #e7e3de;
+
+  /* Marca */
+  --color-brand: #0b7a5f;
+  --color-brand-deep: #075845;
+  --color-brand-ink: #ffffff;
+  --color-accent: #f26b1d;
+  --color-accent-ink: #ffffff;
+
+  /* Tipografia */
+  --font-display: 'Source Serif 4', 'Playfair Display', Georgia, serif;
+  --font-body: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Escala fluida */
+  --text-hero: clamp(2.25rem, 1.2rem + 4.6vw, 4.75rem);
+  --text-hero--line-height: 1.05;
+  --text-hero--letter-spacing: -0.01em;
+  --text-h1: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.01em;
+  --text-h2: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.01em;
+  --text-h3: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --text-h3--line-height: 1.25;
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: 0.06em;
+
+  /* Forma e sombra */
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-card: 0 1px 2px rgba(20, 20, 20, 0.06), 0 4px 12px rgba(20, 20, 20, 0.06);
+  --shadow-float: 0 10px 30px rgba(20, 20, 20, 0.12);
+
+  /* Movimento */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Layout */
+  --container-container: 1240px;
+  --spacing-header: 72px;
+
+  /* Animações personalizadas */
+  --animate-draw-route: draw-route 900ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+
+  @keyframes draw-route {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--spacing-header) + 1rem);
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Foco visível consistente em todo o site (nunca remover) */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background-color: var(--color-surface-tint);
+    color: var(--color-ink);
+  }
+}
+
+/* Rede de segurança global de movimento reduzido (obrigatório) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

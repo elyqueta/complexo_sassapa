@@ -1,0 +1,50 @@
+<div
+  id="menu-mobile"
+  class="fixed inset-0 z-40 flex flex-col bg-surface transition-opacity duration-page ease-out motion-reduce:transition-none lg:hidden"
+  [class.opacity-0]="!aberto()"
+  [class.pointer-events-none]="!aberto()"
+  [attr.aria-hidden]="!aberto()"
+  [attr.inert]="!aberto() ? '' : null"
+>
+  <app-topo-pattern class="pointer-events-none absolute -right-16 top-10 h-72 w-72" />
+
+  <app-container class="relative flex h-full flex-col pt-[calc(var(--spacing-header)+1.5rem)] pb-10">
+    <nav class="flex flex-col gap-1" aria-label="Menu principal">
+      @for (item of navItems; track item.rota; let i = $index) {
+        <a
+          [routerLink]="item.rota"
+          class="font-display text-h2 font-bold text-ink no-underline transition-all duration-[320ms] ease-out motion-reduce:transition-none"
+          [class.opacity-0]="!aberto()"
+          [class.translate-y-4]="!aberto()"
+          [style.transition-delay]="aberto() ? min(i, 8) * 60 + 'ms' : '0ms'"
+          (click)="fechar()"
+          >{{ item.label }}</a
+        >
+      }
+    </nav>
+
+    <div class="mt-auto flex flex-col gap-6">
+      <div
+        class="transition-all duration-[320ms] ease-out motion-reduce:transition-none"
+        [class.opacity-0]="!aberto()"
+        [class.translate-y-4]="!aberto()"
+        [style.transition-delay]="aberto() ? '360ms' : '0ms'"
+        (click)="fechar()"
+      >
+        <app-button variant="primary" routerLink="/inscricoes" class="w-full">Inscrições</app-button>
+      </div>
+
+      <ul
+        class="flex flex-wrap gap-x-6 gap-y-2 transition-all duration-[320ms] ease-out motion-reduce:transition-none"
+        [class.opacity-0]="!aberto()"
+        [style.transition-delay]="aberto() ? '420ms' : '0ms'"
+      >
+        @for (rede of redes; track rede.id) {
+          <li class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-2">
+            <span class="text-accent">{{ rede.sigla }}</span> {{ rede.label }}
+          </li>
+        }
+      </ul>
+    </div>
+  </app-container>
+</div>

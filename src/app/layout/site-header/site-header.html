@@ -1,0 +1,92 @@
+<header
+  class="fixed inset-x-0 top-0 z-50 h-header bg-surface transition-transform duration-[280ms] ease-in-out-soft motion-reduce:transition-none"
+  [class.-translate-y-full]="escondido()"
+>
+  <span
+    class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-line transition-opacity duration-fast ease-out motion-reduce:transition-none"
+    [class.opacity-0]="!scrolled()"
+    aria-hidden="true"
+  ></span>
+
+  <app-container class="flex h-header items-center justify-between gap-4">
+    <a
+      routerLink="/"
+      class="flex items-center gap-3 no-underline"
+      aria-label="Complexo Escolar Privado Sassapa — início"
+    >
+      <!-- TODO(colégio): substituir pelo logo oficial -->
+      <svg viewBox="0 0 40 44" class="h-10 w-10 shrink-0" aria-hidden="true" focusable="false">
+        <path
+          d="M20 2 38 8v18c0 9.6-7.3 14.8-18 16C9.3 40.8 2 35.6 2 26V8L20 2z"
+          fill="var(--color-accent)"
+        />
+        <text
+          x="20"
+          y="28"
+          text-anchor="middle"
+          font-family="'Source Serif 4', Georgia, serif"
+          font-size="19"
+          font-weight="700"
+          fill="var(--color-accent-ink)"
+        >
+          S
+        </text>
+      </svg>
+      <span class="flex flex-col leading-tight">
+        <span class="font-display text-sm font-bold uppercase tracking-[0.08em] text-ink"
+          >Complexo Escolar</span
+        >
+        <span class="font-display text-sm font-bold uppercase tracking-[0.08em] text-ink"
+          >Privado Sassapa</span
+        >
+      </span>
+    </a>
+
+    <nav class="hidden items-center gap-7 lg:flex" aria-label="Navegação principal">
+      @for (item of navItems; track item.rota) {
+        <a
+          [routerLink]="item.rota"
+          routerLinkActive="text-ink"
+          #rla="routerLinkActive"
+          [attr.aria-current]="rla.isActive ? 'page' : null"
+          class="group relative font-display text-label font-bold uppercase tracking-[0.06em] text-ink-2 no-underline transition-colors duration-fast ease-out hover:text-ink motion-reduce:transition-none"
+        >
+          {{ item.label }}
+          <span
+            class="absolute -bottom-1.5 left-0 h-[3px] w-full origin-left scale-x-0 bg-accent transition-transform duration-base ease-out motion-reduce:transition-none"
+            [class.scale-x-100]="rla.isActive"
+          ></span>
+        </a>
+      }
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <app-button variant="primary" size="sm" routerLink="/inscricoes" class="hidden sm:inline-flex">
+        Inscrições
+      </app-button>
+
+      <div class="hidden items-center gap-2 lg:flex" aria-label="Selector de idioma">
+        <span class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink">PT</span>
+        <span class="text-line" aria-hidden="true">|</span>
+        <!-- TODO(i18n): activar quando existir versão inglesa -->
+        <span
+          class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3"
+          title="Versão em inglês em breve"
+          aria-disabled="true"
+          >EN</span
+        >
+      </div>
+
+      <button
+        type="button"
+        class="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink transition-colors duration-fast ease-out hover:bg-surface-soft motion-reduce:transition-none lg:hidden"
+        [attr.aria-expanded]="menuAberto()"
+        aria-controls="menu-mobile"
+        aria-label="Abrir ou fechar o menu"
+        (click)="alternarMenu()"
+      >
+        <app-icon [name]="menuAberto() ? 'close' : 'menu'" />
+      </button>
+    </div>
+  </app-container>
+</header>

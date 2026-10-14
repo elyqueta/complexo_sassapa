@@ -1,0 +1,19 @@
+<section class="relative flex min-h-[70svh] items-center overflow-hidden py-20">
+  <app-topo-pattern class="pointer-events-none absolute -right-20 top-10 h-80 w-80" />
+  <app-container class="relative">
+    <p appReveal="up" class="font-display text-label font-bold uppercase tracking-[0.06em] text-accent">
+      Complexo Escolar Privado Sassapa
+    </p>
+    <h1 appReveal="up" [revealDelay]="80" class="mt-4 font-display text-h1 font-bold text-ink">
+      Esta página está a ser preparada.
+    </h1>
+    <p appReveal="up" [revealDelay]="160" class="mt-4 max-w-prose leading-relaxed text-ink-2">
+      O conteúdo estará disponível em breve. Entretanto, pode conhecer o colégio na página inicial ou
+      entrar em contacto connosco.
+    </p>
+    <div appReveal="up" [revealDelay]="240" class="mt-8 flex flex-wrap gap-4">
+      <app-button variant="primary" routerLink="/">Voltar ao início</app-button>
+      <app-button variant="ghost" routerLink="/inscricoes">Inscrições</app-button>
+    </div>
+  </app-container>
+</section>

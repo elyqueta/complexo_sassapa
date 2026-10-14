@@ -1,0 +1,24 @@
+<a
+  routerLink="/noticias"
+  class="group flex h-full w-64 shrink-0 flex-col gap-4 no-underline sm:w-72 lg:w-auto"
+>
+  <div class="relative overflow-hidden rounded-md">
+    <app-media-image
+      [src]="noticia().imagem"
+      [alt]="noticia().imagemAlt"
+      aspect="landscape"
+      sizes="(max-width: 1023px) 80vw, 25vw"
+      class="transition-transform duration-base ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
+    />
+    <span class="absolute bottom-3 left-3">
+      <app-category-tag [label]="noticia().categoria" tone="chip" />
+    </span>
+  </div>
+  <div class="flex flex-col gap-2">
+    <h3 class="font-display text-h3 font-bold text-ink">{{ noticia().titulo }}</h3>
+    <p class="line-clamp-2 text-sm leading-relaxed text-ink-2">{{ noticia().resumo }}</p>
+    <span class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3">{{
+      noticia().data
+    }}</span>
+  </div>
+</a>

@@ -1,0 +1,124 @@
+<footer class="relative overflow-hidden bg-surface-soft">
+  <app-topo-pattern class="pointer-events-none absolute -left-24 top-8 h-80 w-80" />
+
+  <app-container class="relative py-16 lg:py-20">
+    <div class="grid gap-12 lg:grid-cols-[1.1fr_0.8fr_1fr] lg:gap-16">
+      <!-- Mais… -->
+      <div>
+        <h2 class="font-display text-h1 font-bold text-ink">Mais&hellip;</h2>
+        <p class="mt-4 max-w-prose leading-relaxed text-ink-2">
+          Tudo o que precisa para conhecer o colégio: ciclos de ensino, inscrições, galerias de
+          actividades e contactos directos.
+        </p>
+        <!-- TODO(colégio): substituir pelo desenho da fachada real da escola -->
+        <svg
+          viewBox="0 0 320 160"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          class="mt-8 h-32 w-full max-w-xs text-ink-3"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M20 140h280" />
+          <path d="M32 140V52l128-32 128 32v88" />
+          <path d="M96 140V60h24v80M136 140V60h24v80M176 140V60h24v80M216 140V60h24v80" />
+          <path d="M144 140v-40h32v40" />
+          <path d="M60 70h16v14H60zM244 70h16v14h-16z" />
+        </svg>
+      </div>
+
+      <!-- Atalhos -->
+      <nav aria-label="Atalhos do rodapé">
+        <h3 class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3">
+          Atalhos
+        </h3>
+        <ul class="mt-5 flex flex-col gap-3">
+          @for (item of siteAtalhos; track item.rota) {
+            <li>
+              <a
+                [routerLink]="item.rota"
+                class="font-display text-h3 font-bold text-ink no-underline transition-colors duration-fast ease-out hover:text-accent motion-reduce:transition-none"
+                >{{ item.label }}</a
+              >
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <!-- Redes sociais + contacto -->
+      <div class="flex flex-col gap-10">
+        <div>
+          <h3 class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3">
+            Redes sociais
+          </h3>
+          <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+            @for (rede of redes; track rede.id) {
+              <li>
+                <!-- TODO(colégio): activar ligações quando existirem URLs oficiais -->
+                <span
+                  class="font-display text-h3 font-bold text-ink-2"
+                  [attr.aria-disabled]="true"
+                  [attr.title]="rede.label + ' — em breve'"
+                  ><span class="text-accent">{{ rede.sigla }}</span> {{ rede.label }}</span
+                >
+              </li>
+            }
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3">
+            Contacto
+          </h3>
+          <ul class="mt-5 flex flex-col gap-3 text-sm text-ink-2">
+            <li class="flex items-center gap-3">
+              <app-icon name="phone" class="text-accent" />
+              <a [href]="'tel:' + contactos.telefone.replace(/\s/g, '')" class="no-underline">{{
+                contactos.telefoneLabel
+              }}</a>
+            </li>
+            <li class="flex items-center gap-3">
+              <app-icon name="mail" class="text-accent" />
+              <a [href]="'mailto:' + contactos.email" class="no-underline">{{ contactos.email }}</a>
+            </li>
+            <li class="flex items-center gap-3">
+              <app-icon name="pin" class="text-accent" />
+              <span>{{ contactos.morada }}</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <app-icon name="clock" class="text-accent" />
+              <span>{{ contactos.horario }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </app-container>
+
+  <!-- Faixa verde -->
+  <div class="bg-brand text-brand-ink">
+    <app-container
+      class="flex flex-col gap-6 py-8 md:flex-row md:items-center md:justify-between"
+    >
+      <div>
+        <p class="font-display text-h3 font-bold">Inscrições abertas para 2026</p>
+        <p class="mt-1 text-sm opacity-80">
+          Garanta a vaga do seu educando para o próximo ano lectivo.
+        </p>
+      </div>
+      <app-button variant="tint" routerLink="/inscricoes">Fazer inscrição</app-button>
+    </app-container>
+  </div>
+
+  <!-- Linha final -->
+  <div class="border-t border-line">
+    <app-container class="flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-sm text-ink-3">© {{ ano }} {{ site.nome }}</p>
+      <ul class="flex gap-6 text-sm text-ink-2">
+        <li>Política de privacidade</li>
+        <li>Termos de utilização</li>
+      </ul>
+    </app-container>
+  </div>
+</footer>

@@ -1,0 +1,27 @@
+@if (playing()) {
+  <div class="relative aspect-video w-full overflow-hidden rounded-lg bg-ink">
+    <iframe
+      [src]="embedUrl"
+      [title]="titulo()"
+      class="absolute inset-0 h-full w-full"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </div>
+} @else {
+  <button
+    type="button"
+    class="group relative block w-full overflow-hidden rounded-lg"
+    (click)="playing.set(true)"
+    [attr.aria-label]="'Ver o vídeo: ' + titulo()"
+  >
+    <app-media-image [src]="poster()" [alt]="posterAlt()" aspect="wide" />
+    <span class="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent"></span>
+    <span
+      class="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-surface text-accent transition-transform duration-base ease-out group-hover:scale-105 motion-reduce:transition-none"
+    >
+      <app-icon name="play" class="text-3xl" />
+    </span>
+  </button>
+}
