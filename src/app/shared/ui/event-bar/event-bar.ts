@@ -6,7 +6,7 @@ import { CategoryTag } from '../category-tag/category-tag';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
 
-/** Barra verde da agenda + cartão flutuante com o detalhe do evento activo. */
+/** Barra de marca da agenda + cartão flutuante com o detalhe do evento activo. */
 @Component({
   selector: 'app-event-bar',
   standalone: true,

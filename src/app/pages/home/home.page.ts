@@ -6,7 +6,6 @@ import { NoticiasService } from '../../core/services/noticias.service';
 import { EventosService } from '../../core/services/eventos.service';
 import { EstatisticasService } from '../../core/services/estatisticas.service';
 import { Hero } from './sections/hero/hero';
-import { NewsStrip } from './sections/news-strip/news-strip';
 import { Agenda } from './sections/agenda/agenda';
 import { VideoSection } from './sections/video/video';
 import { StatsSection } from './sections/stats/stats';
@@ -15,7 +14,7 @@ import { SectionDots, SeccaoDot } from '../../shared/ui/section-dots/section-dot
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Hero, NewsStrip, Agenda, VideoSection, StatsSection, SectionDots],
+  imports: [Hero, Agenda, VideoSection, StatsSection, SectionDots],
   templateUrl: './home.page.html',
 })
 export class Home {

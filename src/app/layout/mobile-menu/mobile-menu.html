@@ -1,50 +1,86 @@
 <div
   id="menu-mobile"
-  class="fixed inset-0 z-40 flex flex-col bg-surface transition-opacity duration-page ease-out motion-reduce:transition-none lg:hidden"
-  [class.opacity-0]="!aberto()"
+  class="fixed inset-0 z-[60] overflow-x-clip transition-opacity duration-page ease-out motion-reduce:transition-none"
+  [class.invisible]="!aberto()"
   [class.pointer-events-none]="!aberto()"
+  [class.opacity-0]="!aberto()"
   [attr.aria-hidden]="!aberto()"
   [attr.inert]="!aberto() ? '' : null"
 >
-  <app-topo-pattern class="pointer-events-none absolute -right-16 top-10 h-72 w-72" />
+  <button
+    type="button"
+    class="absolute inset-0 h-full w-full bg-ink/30"
+    aria-label="Fechar menu"
+    tabindex="-1"
+    (click)="fechar()"
+  ></button>
 
-  <app-container class="relative flex h-full flex-col pt-[calc(var(--spacing-header)+1.5rem)] pb-10">
-    <nav class="flex flex-col gap-1" aria-label="Menu principal">
-      @for (item of navItems; track item.rota; let i = $index) {
-        <a
-          [routerLink]="item.rota"
-          class="font-display text-h2 font-bold text-ink no-underline transition-all duration-[320ms] ease-out motion-reduce:transition-none"
-          [class.opacity-0]="!aberto()"
-          [class.translate-y-4]="!aberto()"
-          [style.transition-delay]="aberto() ? min(i, 8) * 60 + 'ms' : '0ms'"
+  <aside
+    class="absolute inset-y-0 right-0 flex w-full flex-col overflow-hidden bg-surface pt-[calc(var(--spacing-header)+1rem)] pb-8 lg:w-[440px]"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menu principal"
+  >
+    <app-topo-pattern class="pointer-events-none absolute -right-16 top-10 h-72 w-72" />
+    <app-container class="relative flex h-full w-full flex-col">
+      <div class="flex items-center justify-between border-b border-line pb-5">
+        <p class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3">
+          Menu
+        </p>
+        <button
+          id="menu-mobile-close"
+          type="button"
+          class="flex h-11 w-11 items-center justify-center rounded-sm border border-line text-ink"
+          aria-label="Fechar menu"
           (click)="fechar()"
-          >{{ item.label }}</a
         >
-      }
-    </nav>
-
-    <div class="mt-auto flex flex-col gap-6">
-      <div
-        class="transition-all duration-[320ms] ease-out motion-reduce:transition-none"
-        [class.opacity-0]="!aberto()"
-        [class.translate-y-4]="!aberto()"
-        [style.transition-delay]="aberto() ? '360ms' : '0ms'"
-        (click)="fechar()"
-      >
-        <app-button variant="primary" routerLink="/inscricoes" class="w-full">Inscrições</app-button>
+          <app-icon name="close" />
+        </button>
       </div>
 
-      <ul
-        class="flex flex-wrap gap-x-6 gap-y-2 transition-all duration-[320ms] ease-out motion-reduce:transition-none"
-        [class.opacity-0]="!aberto()"
-        [style.transition-delay]="aberto() ? '420ms' : '0ms'"
-      >
-        @for (rede of redes; track rede.id) {
-          <li class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-2">
-            <span class="text-accent">{{ rede.sigla }}</span> {{ rede.label }}
-          </li>
+      <nav class="mt-5 flex flex-col gap-1" aria-label="Navegação principal">
+        @for (item of navItems; track item.rota; let i = $index) {
+          <a
+            [routerLink]="item.rota"
+            class="min-h-12 border-b border-line py-2 font-display text-h3 font-bold text-ink no-underline transition-all duration-[320ms] ease-out motion-reduce:transition-none"
+            [class.opacity-0]="!aberto()"
+            [class.translate-y-4]="!aberto()"
+            [style.transition-delay]="aberto() ? min(i, 8) * 60 + 'ms' : '0ms'"
+            (click)="fechar()"
+            >{{ item.label }}</a
+          >
         }
-      </ul>
-    </div>
-  </app-container>
+        <a
+          routerLink="/inscricoes"
+          class="min-h-12 border-b border-line py-2 font-display text-h3 font-bold text-ink no-underline"
+          (click)="fechar()"
+          >Inscrições</a
+        >
+      </nav>
+
+      <div class="mt-auto flex flex-col gap-6">
+        <app-button variant="primary" routerLink="/inscricoes" class="w-full" (click)="fechar()">
+          Fazer inscrição
+        </app-button>
+
+        <div>
+          <p class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3">
+            Redes sociais
+          </p>
+          <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+            @for (rede of redes; track rede.id) {
+              <li class="font-display text-sm font-bold text-ink-2">
+                <span class="text-accent">{{ rede.sigla }}</span> {{ rede.label }}
+              </li>
+            }
+          </ul>
+        </div>
+
+        <ul class="flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-4 text-sm text-ink-2">
+          <li><a [href]="'tel:' + contactos.telefone.replace(/\s/g, '')">{{ contactos.telefoneLabel }}</a></li>
+          <li><a [href]="'mailto:' + contactos.email">{{ contactos.email }}</a></li>
+        </ul>
+      </div>
+    </app-container>
+  </aside>
 </div>

@@ -1,0 +1,107 @@
+<div
+  id="search-panel"
+  class="fixed inset-0 z-[60]"
+  [class.hidden]="!aberto()"
+  (keydown)="onKeydown($event)"
+>
+  <button
+    type="button"
+    class="absolute inset-0 h-full w-full cursor-default bg-ink/30"
+    aria-label="Fechar pesquisa"
+    (click)="fechar()"
+  ></button>
+
+  <section
+    class="absolute inset-x-0 top-header border-b border-line bg-surface"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Pesquisar no site"
+  >
+    <div class="mx-auto max-w-container px-4 py-8 sm:px-6 lg:px-10">
+      <div class="flex items-center gap-4 border-b border-line pb-4">
+        <label for="site-search" class="sr-only">Pesquisar</label>
+        <input
+          #searchInput
+          id="site-search"
+          type="search"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-controls="search-results"
+          [attr.aria-expanded]="query().trim().length > 0"
+          [attr.aria-activedescendant]="resultadoId(resultadoActivo()) || null"
+          [value]="query()"
+          (input)="onInput($event)"
+          placeholder="O que procura?"
+          class="min-w-0 flex-1 border-0 bg-transparent font-display text-h2 text-ink outline-none placeholder:text-ink-3"
+        />
+        <button
+          type="button"
+          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-line text-ink"
+          aria-label="Fechar pesquisa"
+          (click)="fechar()"
+        >
+          <app-icon name="close" />
+        </button>
+      </div>
+
+      @if (query().trim()) {
+        @if (resultados().length) {
+          <div id="search-results" class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" role="listbox">
+            @for (grupo of grupos(); track grupo.kind) {
+              <section [attr.aria-label]="grupo.kind">
+                <h2 class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3">
+                  {{ grupo.kind }}
+                </h2>
+                <ul class="mt-2 flex flex-col">
+                  @for (resultado of grupo.results; track resultado.id) {
+                    <li>
+                      <button
+                        type="button"
+                        role="option"
+                        [id]="resultado.id"
+                        [attr.aria-selected]="indexOf(resultado.id) === resultadoActivo()"
+                        class="w-full border-b border-line py-3 text-left"
+                        [class.bg-surface-tint]="indexOf(resultado.id) === resultadoActivo()"
+                        (click)="escolher(resultado.id)"
+                      >
+                        <span class="block font-display text-base font-bold text-ink">
+                          {{ resultado.title }}
+                        </span>
+                        <span class="mt-1 block text-sm leading-relaxed text-ink-2">
+                          {{ resultado.description }}
+                        </span>
+                      </button>
+                    </li>
+                  }
+                </ul>
+              </section>
+            }
+          </div>
+        } @else {
+          <p class="mt-6 text-ink-2" aria-live="polite">
+            Sem resultados. Experimente pesquisar por inscrições, ciclos de ensino ou contactos.
+          </p>
+        }
+      } @else {
+        <div class="mt-6">
+          <h2 class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3">
+            Sugestões
+          </h2>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            @for (sugestao of sugestoes; track sugestao.label) {
+              <li>
+                <a
+                  [routerLink]="sugestao.href"
+                  class="inline-flex min-h-11 items-center border border-line bg-surface-soft px-4 text-sm text-ink no-underline"
+                  (click)="fechar()"
+                >
+                  {{ sugestao.label }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </section>
+</div>

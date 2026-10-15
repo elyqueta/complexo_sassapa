@@ -1,7 +1,7 @@
 <div class="relative overflow-hidden bg-surface-soft" [class]="aspectClass">
   <img
     [src]="src()"
-    [srcset]="srcset || null"
+    [attr.srcset]="srcset || null"
     [sizes]="sizesValue"
     [alt]="alt()"
     [attr.width]="width()"

@@ -1,48 +1,264 @@
 <section
   id="inicio"
-  class="relative flex min-h-[100svh] items-center pb-16 pt-[calc(var(--spacing-header)+3rem)] lg:pt-[calc(var(--spacing-header)+4rem)]"
+  class="relative isolate min-h-[100svh] overflow-x-clip overflow-y-hidden bg-brand-deep text-white lg:h-[100svh] lg:min-h-[760px]"
 >
-  <app-topo-pattern class="pointer-events-none absolute -right-24 top-28 hidden h-96 w-96 lg:block" />
+  <app-media-image
+    [src]="heroImg"
+    alt=""
+    aspect="wide"
+    [priority]="true"
+    sizes="100vw"
+    class="absolute inset-0 h-full w-full"
+  />
+  <span
+    class="pointer-events-none absolute inset-0 bg-gradient-to-b from-brand-deep/70 via-brand-deep/30 to-brand-deep/85"
+    aria-hidden="true"
+  ></span>
+  <span
+    class="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-deep/40 via-transparent to-brand-deep/20"
+    aria-hidden="true"
+  ></span>
 
-  <app-container class="relative">
-    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-      <div>
-        <span class="block font-display text-h1 font-bold leading-none text-accent" aria-hidden="true"
-          >&ldquo;</span
+  <div
+    class="absolute left-1/2 top-[19%] z-10 w-[92%] -translate-x-1/2 text-center sm:top-[22%] lg:top-[17.5%] lg:w-[54%]"
+  >
+    <h1 class="font-display text-[clamp(1.5rem,3.08vw,3.25rem)] font-bold leading-[1.05] text-white">
+      <span appReveal="up" class="block whitespace-nowrap">Educar com excelência,</span>
+      <span appReveal="up" [revealDelay]="80" class="block whitespace-nowrap">formar com valores.</span>
+    </h1>
+    <p
+      appReveal="up"
+      [revealDelay]="160"
+      class="mx-auto mt-4 max-w-[36rem] text-sm leading-relaxed text-white/90 sm:text-base lg:max-w-[29rem]"
+    >
+      Do pré-escolar ao Ensino Médio,<br class="hidden sm:block" />
+      com ensino de qualidade e valores que formam cidadãos.
+    </p>
+    <div class="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <app-button variant="primary" routerLink="/inscricoes" class="w-full border-white bg-accent px-5 text-white sm:w-auto">
+        Fazer inscrição
+      </app-button>
+      <app-button variant="ghost-inverse" routerLink="/sobre" class="w-full sm:w-auto">
+        Conhecer o colégio
+      </app-button>
+    </div>
+
+    <button
+      type="button"
+      class="mx-auto mt-4 flex h-12 w-12 items-center justify-center rounded-full border border-white text-accent-soft sm:mt-5 lg:mt-8 lg:h-14 lg:w-14"
+      aria-label="Ver o vídeo de apresentação do colégio"
+      (click)="abrirVideo()"
+    >
+      <app-icon name="play" />
+    </button>
+  </div>
+
+  <aside
+    class="absolute left-[6.3%] top-[23%] z-10 hidden w-44 flex-col text-white lg:flex"
+    aria-label="Informação sobre a apresentação"
+  >
+    <app-vertical-label label="Mensagem" class="absolute -left-8 top-0 text-white" />
+    <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/70 bg-brand">
+      <app-logo variant="mark" tone="white" [decorative]="true" />
+    </div>
+    <p class="mt-3 font-display text-sm font-bold">Direcção pedagógica</p>
+    <p class="mt-1 text-xs text-white/70">Complexo Escolar Privado Sassapa</p>
+    <span class="mt-4 h-px w-20 bg-white/30" aria-hidden="true"></span>
+    <p class="mt-4 text-xs text-white/80">Apresentação institucional</p>
+    <p class="mt-9 text-xs text-white/80">{{ duracaoVideo }}</p>
+  </aside>
+
+  <nav
+    class="absolute right-[5.5%] top-[25%] z-20 hidden flex-col items-center gap-5 text-white lg:flex"
+    aria-label="Navegação por secções"
+  >
+    @for (seccao of seccoes; track seccao.id; let i = $index) {
+      <button
+        type="button"
+        class="flex h-3 w-3 items-center justify-center rounded-full border border-white/80"
+        [attr.aria-label]="seccao.label"
+        [attr.aria-current]="i === 0 ? 'true' : null"
+        (click)="irPara(seccao.id)"
+      >
+        @if (i === 0) {
+          <span class="h-8 w-8 rounded-full border border-white bg-surface text-accent"></span>
+        }
+      </button>
+    }
+  </nav>
+
+  <div
+    class="absolute inset-x-0 bottom-0 z-10 h-[38%] overflow-x-auto overflow-y-hidden px-[4%] pb-3 pt-2 [scrollbar-width:none] snap-x snap-mandatory [&::-webkit-scrollbar]:hidden sm:h-[37%] lg:h-[35%] lg:px-0 lg:pb-5 lg:pt-0 lg:snap-none"
+    aria-label="Notícias recentes e próximo evento"
+  >
+    <p class="mb-3 font-display text-label font-bold uppercase tracking-[0.06em] text-white lg:hidden">
+      Notícias <span class="ml-2 text-white/60">1 / {{ noticias().length + eventos().length }}</span>
+    </p>
+
+    <div class="relative flex h-full w-max gap-4 sm:gap-5 lg:block lg:w-full">
+      <span
+        class="absolute -left-7 top-0 hidden h-28 lg:block"
+        aria-hidden="true"
+      >
+        <app-vertical-label label="Notícias" class="text-white" />
+      </span>
+      <span
+        class="absolute -left-7 bottom-0 hidden lg:block"
+        aria-hidden="true"
+      >
+        <app-vertical-label label="1 / 4" class="text-white/60" />
+      </span>
+
+      @for (noticia of noticiasVisiveis(); track noticia.id; let i = $index) {
+        <a
+          routerLink="/noticias"
+          appReveal="up"
+          [revealDelay]="i * 80"
+          class="group snap-start flex h-full w-[74vw] shrink-0 flex-col text-white no-underline sm:w-[43vw] lg:absolute lg:top-0 lg:w-[16.4%]"
+          [style.left.%]="posicaoNoticia(i)"
+          [attr.aria-label]="noticia.titulo"
         >
-        <h1 class="mt-1 font-display text-hero font-bold text-ink">
-          @for (linha of tituloLinhas; track linha) {
-            <span class="block overflow-hidden">
-              <span class="block" appReveal="up" [revealDelay]="$index * 80">{{ linha }}</span>
+          <div class="relative aspect-[25/16] shrink-0 overflow-hidden rounded-sm border border-white/20">
+            @if (i === 0) {
+              <img
+                src="/hero-school.webp"
+                [alt]="noticia.imagemAlt"
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover"
+              />
+              <span class="absolute inset-0 bg-brand-deep/25" aria-hidden="true"></span>
+            } @else {
+              <span class="absolute inset-0 bg-gradient-to-br from-brand via-brand-deep to-brand-deep"></span>
+              <app-logo
+                variant="mark"
+                tone="white"
+                [decorative]="true"
+                class="absolute -right-4 -top-5 h-[90%] opacity-20"
+              />
+            }
+            <span
+              class="absolute right-3 top-2 font-body text-sm font-bold tracking-wide text-white sm:text-base"
+            >
+              {{ etiquetaNoticia(i) }}<span class="ml-1 font-normal">&thinsp;&prime;</span>
             </span>
-          }
-        </h1>
-        <p appReveal="up" [revealDelay]="280" class="mt-6 max-w-prose leading-relaxed text-ink-2">
-          Um colégio angolano que acompanha cada aluno do pré-escolar ao Ensino Médio, com ensino de
-          qualidade, professores dedicados e valores que formam cidadãos.
-        </p>
-        <div appReveal="up" [revealDelay]="360" class="mt-8 flex flex-wrap gap-4">
-          <app-button variant="ghost" routerLink="/sobre">Conhecer o colégio</app-button>
-          <app-button variant="primary" routerLink="/inscricoes">Fazer inscrição</app-button>
-        </div>
-      </div>
-
-      <div appReveal="scale" class="relative order-first lg:order-none">
-        <div class="relative overflow-hidden rounded-lg shadow-card">
-          <app-media-image
-            #foto
-            [src]="heroImg"
-            alt="Alunos angolanos à entrada da escola, mochilas às costas"
-            aspect="portrait"
-            [priority]="true"
-            sizes="(max-width: 1023px) 100vw, 45vw"
+          </div>
+          <h2 class="mt-3 line-clamp-2 font-display text-sm font-bold leading-[1.15] text-white sm:text-base lg:text-[clamp(0.8125rem,1.07vw,1rem)]">
+            {{ noticia.titulo }}
+          </h2>
+          <p class="mt-2 flex gap-3 text-[11px] text-white/65">
+            <span>{{ noticia.data }}</span>
+            <span>2 min</span>
+          </p>
+        </a>
+      } @empty {
+        <div
+          class="relative flex h-full w-[74vw] shrink-0 flex-col justify-end overflow-hidden rounded-sm border border-white/20 bg-gradient-to-br from-brand to-brand-deep p-4 text-white sm:w-[43vw] lg:absolute lg:left-[9.7%] lg:top-0 lg:w-[16.4%]"
+          aria-live="polite"
+        >
+          <app-logo
+            variant="mark"
+            tone="white"
+            [decorative]="true"
+            class="absolute -right-4 -top-5 h-3/4 opacity-20"
           />
-          <span
-            class="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-surface to-transparent"
-            aria-hidden="true"
-          ></span>
+          <p class="relative font-display text-base font-bold">Novidades do Sassapa</p>
+          <p class="relative mt-1 text-xs text-white/70">As notícias serão publicadas em breve.</p>
         </div>
+      }
+
+      @if (eventoProximo(); as evento) {
+        <a
+          routerLink="/noticias"
+          class="group snap-start flex h-full w-[74vw] shrink-0 flex-col text-white no-underline sm:w-[43vw] lg:absolute lg:top-0 lg:w-[16.8%]"
+          [style.left.%]="71.6"
+          [attr.aria-label]="'Próximo evento: ' + evento.titulo"
+        >
+          <div class="relative aspect-[25/16] shrink-0 overflow-hidden rounded-sm border-4 border-accent">
+            <img
+              src="/hero-school.webp"
+              [alt]="evento.imagemAlt || ''"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover"
+            />
+            <span class="absolute inset-0 bg-brand-deep/30" aria-hidden="true"></span>
+            <span class="absolute bottom-0 left-0 bg-accent px-3 py-1 font-display text-label font-bold uppercase tracking-[0.06em] text-white">Próximo</span>
+            <span class="absolute right-3 top-2 font-body text-sm font-bold tracking-wide text-white">Eve<span class="ml-1 font-normal">&thinsp;&prime;</span></span>
+          </div>
+          <h2 class="mt-3 line-clamp-2 font-display text-sm font-bold leading-[1.15] text-white sm:text-base lg:text-[clamp(0.8125rem,1.07vw,1rem)]">
+            {{ evento.titulo }}
+          </h2>
+          <p class="mt-2 flex gap-3 text-[11px] text-white/65">
+            <span>{{ evento.dataHora }}</span>
+            <span>Agenda</span>
+          </p>
+        </a>
+      }
+
+      @if (noticiaA(); as noticia) {
+        <a
+          routerLink="/noticias"
+          class="group snap-start flex h-full w-[74vw] shrink-0 flex-col text-white no-underline sm:w-[43vw] lg:absolute lg:top-0 lg:w-[16.4%]"
+          [style.left.%]="90.5"
+          [attr.aria-label]="noticia.titulo"
+        >
+          <div class="relative aspect-[25/16] shrink-0 overflow-hidden rounded-sm border border-white/20 bg-gradient-to-br from-brand to-brand-deep">
+            <app-logo variant="mark" tone="white" [decorative]="true" class="absolute -right-4 -top-5 h-[90%] opacity-20" />
+            <span class="absolute right-3 top-2 font-body text-sm font-bold text-white">Act<span class="ml-1 font-normal">&thinsp;&prime;</span></span>
+          </div>
+          <h2 class="mt-3 line-clamp-2 font-display text-sm font-bold leading-[1.15] text-white sm:text-base">
+            {{ noticia.titulo }}
+          </h2>
+        </a>
+      }
+    </div>
+
+    <span class="absolute left-[68.3%] top-0 hidden h-full w-px bg-white/25 lg:block" aria-hidden="true"></span>
+    <span class="absolute left-[67.6%] top-0 hidden lg:block">
+      <app-vertical-label label="Agenda" class="text-white" />
+    </span>
+    <span class="absolute bottom-0 left-[67.6%] hidden lg:block">
+      <app-vertical-label label="0 / 6" class="text-white/60" />
+    </span>
+  </div>
+
+  @if (videoAberto()) {
+    <div
+      class="fixed inset-0 z-[80] flex items-center justify-center bg-brand-deep/95 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Vídeo de apresentação do colégio"
+      (keydown.escape)="fecharVideo()"
+    >
+      <div class="relative w-full max-w-3xl border border-white/20 bg-brand-deep p-5 text-white sm:p-8">
+        <button
+          type="button"
+          class="absolute right-3 top-3 flex h-11 w-11 items-center justify-center border border-white/40"
+          aria-label="Fechar vídeo"
+          (click)="fecharVideo()"
+        >
+          <app-icon name="close" />
+        </button>
+        <h2 class="pr-12 font-display text-h2 font-bold">Conheça o Sassapa por dentro</h2>
+        @if (video.youtubeId !== 'TODO') {
+          <div class="mt-6">
+            <app-youtube-facade
+              [youtubeId]="video.youtubeId"
+              titulo="Conheça o Sassapa por dentro"
+              [poster]="heroImg"
+              posterAlt="Alunos numa escola angolana"
+            />
+          </div>
+        } @else {
+          <div class="relative mt-6 flex aspect-video items-end overflow-hidden border border-white/20 bg-brand p-6">
+            <img src="/hero-school.webp" alt="" class="absolute inset-0 h-full w-full object-cover opacity-35" />
+            <p class="relative max-w-prose text-white">
+              O vídeo institucional será disponibilizado assim que o ficheiro oficial do colégio estiver pronto.
+            </p>
+          </div>
+        }
       </div>
     </div>
-  </app-container>
+  }
 </section>

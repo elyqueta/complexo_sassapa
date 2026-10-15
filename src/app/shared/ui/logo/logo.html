@@ -1,0 +1,7 @@
+<img
+  [src]="src()"
+  [attr.alt]="decorative() ? '' : alt()"
+  [attr.role]="decorative() ? null : 'img'"
+  [attr.aria-hidden]="decorative() ? 'true' : null"
+  class="block h-full w-auto"
+/>

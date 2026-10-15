@@ -1,17 +1,17 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   DestroyRef,
   ElementRef,
-  PLATFORM_ID,
-  afterNextRender,
   effect,
   inject,
+  PLATFORM_ID,
+  afterNextRender,
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { fromEvent } from 'rxjs';
 import { RouterLink } from '@angular/router';
-import { NAV_ITEMS, REDES_SOCIAIS, SITE } from '../../core/config/site.config';
+import { fromEvent } from 'rxjs';
+import { CONTACTOS, NAV_ITEMS, REDES_SOCIAIS } from '../../core/config/site.config';
 import { UiStateService } from '../../core/services/ui-state.service';
 import { Button } from '../../shared/ui/button/button';
 import { Container } from '../../shared/ui/container/container';
@@ -21,12 +21,13 @@ import { TopoPattern } from '../../shared/ui/topo-pattern/topo-pattern';
 @Component({
   selector: 'app-mobile-menu',
   standalone: true,
-  imports: [RouterLink, Button, Container, TopoPattern],
+  imports: [RouterLink, Button, Container, Icon, TopoPattern],
   templateUrl: './mobile-menu.html',
 })
 export class MobileMenu {
   protected readonly navItems = NAV_ITEMS;
   protected readonly redes = REDES_SOCIAIS;
+  protected readonly contactos = CONTACTOS;
   protected readonly min = Math.min;
 
   private readonly ui = inject(UiStateService);
@@ -36,28 +37,39 @@ export class MobileMenu {
   protected readonly aberto = this.ui.menuMobileAberto;
 
   constructor() {
-    // Bloqueia o scroll do corpo enquanto o menu está aberto.
-    effect(() => {
-      const aberto = this.aberto();
+    effect((onCleanup) => {
+      const bloqueado = this.aberto() || this.ui.pesquisaAberta();
       if (!isPlatformBrowser(this.platformId)) return;
-      document.body.style.overflow = aberto ? 'hidden' : '';
+
+      const overflowAnterior = document.body.style.overflow;
+      if (bloqueado) document.body.style.overflow = 'hidden';
+      onCleanup(() => {
+        document.body.style.overflow = overflowAnterior;
+      });
     });
 
-    // Esc fecha e o foco fica preso ao painel enquanto está aberto.
+    effect(() => {
+      if (!this.aberto() || !isPlatformBrowser(this.platformId)) return;
+      requestAnimationFrame(() => {
+        const closeButton = this.el.nativeElement.querySelector('#menu-mobile-close') as
+          | HTMLElement
+          | null;
+        closeButton?.focus();
+      });
+    });
+
     afterNextRender(() => {
       fromEvent<KeyboardEvent>(document, 'keydown')
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((event) => {
           if (!this.ui.menuMobileAberto()) return;
           if (event.key === 'Escape') {
-            this.ui.fecharMenu();
+            this.fechar();
             return;
           }
           if (event.key !== 'Tab') return;
 
-          const foco = (
-            this.el.nativeElement as HTMLElement
-          ).querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+          const foco = this.getFocusableElements();
           if (!foco.length) return;
           const primeiro = foco[0];
           const ultimo = foco[foco.length - 1];
@@ -74,5 +86,15 @@ export class MobileMenu {
 
   protected fechar(): void {
     this.ui.fecharMenu();
+    if (isPlatformBrowser(this.platformId)) {
+      requestAnimationFrame(() => document.getElementById('header-menu-toggle')?.focus());
+    }
+  }
+
+  private getFocusableElements(): HTMLElement[] {
+    const elements = this.el.nativeElement.querySelectorAll(
+      '[role="dialog"] a[href], [role="dialog"] button:not([disabled])',
+    ) as NodeListOf<HTMLElement>;
+    return Array.from(elements);
   }
 }

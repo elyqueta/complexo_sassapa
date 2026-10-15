@@ -3,6 +3,7 @@ export type IconName =
   | 'arrow-up'
   | 'menu'
   | 'close'
+  | 'search'
   | 'play'
   | 'home'
   | 'news'
@@ -26,6 +27,8 @@ export const ICON_PATHS: Record<IconName, string> = {
   menu: 'M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z',
   close:
     'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z',
+  search:
+    'M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.78L20 21.49 21.49 20l-5.99-6zm-5 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z',
   play: 'M8 5v14l11-7L8 5z',
   home: 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z',
   news: 'M4 4h13v16H6a2 2 0 0 1-2-2V4zm2 4v2h9V8H6zm0 4v2h9v-2H6zm0 4v2h5v-2H6z',

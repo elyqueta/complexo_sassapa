@@ -1,22 +1,17 @@
-@if (routerLink()) {
-  <a [routerLink]="routerLink()" [class]="classes" class="no-underline">
-    <ng-content />
-    @if (arrow()) {
-      <app-icon name="arrow-right" class="transition-transform duration-fast ease-out group-hover:translate-x-1 motion-reduce:transition-none" />
-    }
-  </a>
-} @else if (href()) {
-  <a [href]="href()" [class]="classes" class="no-underline">
-    <ng-content />
-    @if (arrow()) {
-      <app-icon name="arrow-right" class="transition-transform duration-fast ease-out group-hover:translate-x-1 motion-reduce:transition-none" />
-    }
-  </a>
-} @else {
-  <button type="button" [class]="classes">
-    <ng-content />
-    @if (arrow()) {
-      <app-icon name="arrow-right" class="transition-transform duration-fast ease-out group-hover:translate-x-1 motion-reduce:transition-none" />
-    }
-  </button>
-}
+<a
+  [routerLink]="routerLink()"
+  [attr.href]="routerLink() ? null : href()"
+  [attr.role]="!routerLink() && !href() ? 'button' : null"
+  [attr.tabindex]="!routerLink() && !href() ? 0 : null"
+  [class]="classes"
+  class="no-underline"
+  (click)="onClick($event)"
+>
+  <span><ng-content></ng-content></span>
+  @if (arrow()) {
+    <app-icon
+      name="arrow-right"
+      class="transition-transform duration-fast ease-out group-hover:translate-x-1 motion-reduce:transition-none"
+    />
+  }
+</a>
