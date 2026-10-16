@@ -24,7 +24,8 @@
       aria-label="Complexo Escolar Privado Sassapa — início"
     >
       <app-logo variant="mark" [tone]="logoTone()" class="h-10 w-9 shrink-0" />
-      <span class="flex min-w-0 flex-col font-display text-nav font-bold uppercase leading-tight tracking-wider transition-colors duration-300 ease-out motion-reduce:transition-none"
+      <span
+        class="flex min-w-0 flex-col font-display text-nav font-bold uppercase leading-tight tracking-wider transition-colors duration-300 ease-out motion-reduce:transition-none"
         [class.text-white]="!isSolid()"
         [class.text-ink]="isSolid()"
       >
@@ -46,7 +47,7 @@
           [class.text-accent]="isSolid() && rla.isActive"
           [class.text-white]="!isSolid()"
           [class.text-ink-2]="isSolid() && !rla.isActive"
-          class="group relative whitespace-nowrap font-display text-nav font-bold uppercase tracking-[0.06em] no-underline transition-colors duration-fast ease-out motion-reduce:transition-none"
+          class="group relative whitespace-nowrap font-display text-nav font-bold uppercase tracking-[0.06em] no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-accent transition-colors duration-fast ease-out motion-reduce:transition-none"
         >
           {{ item.label }}
           <span
@@ -61,7 +62,7 @@
       <button
         id="header-search"
         type="button"
-        class="flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-fast ease-out hover:bg-surface-soft/30 cursor-pointer motion-reduce:transition-none"
+        class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-sm outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent transition-colors duration-fast ease-out hover:bg-surface-soft/30 motion-reduce:transition-none"
         [class.text-ink]="isSolid()"
         [class.text-white]="!isSolid()"
         [attr.aria-expanded]="pesquisaAberta()"
@@ -81,7 +82,7 @@
       <button
         id="header-menu-toggle"
         type="button"
-        class="flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-fast ease-out hover:bg-surface-soft/30 cursor-pointer motion-reduce:transition-none"
+        class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-sm outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent transition-colors duration-fast ease-out hover:bg-surface-soft/30 motion-reduce:transition-none"
         [class.text-ink]="isSolid()"
         [class.text-white]="!isSolid()"
         [attr.aria-expanded]="menuAberto()"
@@ -90,9 +91,11 @@
         (click)="alternarMenu()"
       >
         <img
-          [src]="menuAberto()
-            ? '/assets/brand/close-svgrepo-com.svg'
-            : '/assets/brand/menu-svgrepo-com.svg'"
+          [src]="
+            menuAberto()
+              ? '/assets/brand/close-svgrepo-com.svg'
+              : '/assets/brand/menu-svgrepo-com.svg'
+          "
           alt=""
           aria-hidden="true"
           class="h-5 w-5 transition-[filter] duration-fast ease-out motion-reduce:transition-none"

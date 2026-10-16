@@ -1,6 +1,6 @@
 <section
   [id]="eHome() ? 'inicio' : 'noticias'"
-  class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-brand-deep text-white lg:h-[100svh] lg:min-h-[720px]"
+  class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-brand-deep text-white lg:h-[100svh] lg:min-h-190"
 >
   <!-- Fotografia à direita com fade para a cor da marca -->
   <div class="absolute inset-y-0 right-0 -z-10 w-full lg:w-[64%]" aria-hidden="true">
@@ -9,13 +9,13 @@
       alt=""
       fetchpriority="high"
       decoding="async"
-      class="h-full w-full object-cover"
+      class="h-full w-full object-cover object-[58%_center] lg:object-[64%_center]"
     />
     <span
-      class="absolute inset-0 bg-brand-deep/70 lg:bg-transparent lg:bg-gradient-to-r lg:from-brand-deep lg:via-brand-deep/40 lg:to-transparent"
+      class="absolute inset-0 bg-linear-to-r from-brand-deep via-brand-deep/75 to-brand-deep/20"
     ></span>
     <span
-      class="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-brand-deep to-transparent"
+      class="absolute inset-0 bg-linear-to-b from-brand-deep/35 via-transparent to-brand-deep/95"
     ></span>
   </div>
 
@@ -32,31 +32,37 @@
       }
       <div class="flex gap-4 lg:gap-6">
         <span
-          class="font-display text-[4rem] font-bold leading-none text-accent"
+          class="hidden shrink-0 font-display text-[3rem] font-bold leading-none text-accent sm:block sm:text-[4rem]"
           aria-hidden="true"
           >&ldquo;</span
         >
-        <div class="max-w-xl">
+        <div class="max-w-2xl min-w-0">
           <h1
-            class="font-display text-[clamp(2rem,4.2vw,4rem)] font-bold leading-[1.05] text-white"
+            class="font-display text-[clamp(1.5rem,7.5vw,1.75rem)] font-bold leading-[1.06] text-white sm:text-[clamp(1.75rem,4.2vw,4rem)]"
           >
             @for (linha of tituloLinhas(); track $index) {
-              <span appReveal="up" [revealDelay]="$index * 80" class="block">{{ linha }}</span>
+              <span appReveal="up" [revealDelay]="$index * 70" class="block whitespace-nowrap">{{
+                linha
+              }}</span>
             }
           </h1>
           <p
             appReveal="up"
-            [revealDelay]="160"
-            class="mt-5 max-w-md text-sm leading-relaxed text-white/90 sm:text-base"
+            [revealDelay]="140"
+            class="mt-5 max-w-md text-[15px] leading-relaxed text-white/90 sm:text-base"
           >
             {{ subtituloTexto() }}
           </p>
-          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-            <app-button variant="ghost-inverse" [routerLink]="botaoSecundario().rota" class="w-full sm:w-auto">
-              {{ botaoSecundario().label }}
-            </app-button>
+          <div appReveal="up" [revealDelay]="210" class="mt-7 flex flex-col gap-3 sm:flex-row">
             <app-button variant="primary" routerLink="/inscricoes" class="w-full sm:w-auto">
               Fazer inscrição
+            </app-button>
+            <app-button
+              variant="ghost-inverse"
+              [routerLink]="botaoSecundario().rota"
+              class="w-full sm:w-auto"
+            >
+              {{ botaoSecundario().label }}
             </app-button>
           </div>
         </div>
@@ -68,6 +74,13 @@
   <div class="relative z-10 pb-6 lg:pb-10" [attr.aria-label]="rotuloFaixa()">
     <div class="mx-auto w-full max-w-container px-4 sm:px-6 lg:px-10">
       <span class="block h-[3px] w-12 bg-accent" aria-hidden="true"></span>
+      @if (eHome()) {
+        <p
+          class="mt-2 font-display text-label font-bold uppercase tracking-[0.06em] text-white/65 lg:hidden"
+        >
+          Ciclos de ensino · deslize para explorar
+        </p>
+      }
       <div class="mt-4 flex gap-6">
         <div class="hidden shrink-0 flex-col justify-between lg:flex" aria-hidden="true">
           <span
@@ -80,44 +93,80 @@
           >
         </div>
 
-        <ul
-          [class]="colunas()"
-          class="flex min-w-0 flex-1 snap-x snap-mandatory gap-5 overflow-x-auto [scrollbar-width:none] lg:grid lg:gap-6 lg:overflow-visible [&::-webkit-scrollbar]:hidden"
-        >
-          @for (item of itens(); track item.id; let i = $index) {
-            <li class="w-[70vw] shrink-0 snap-start sm:w-[40vw] lg:w-auto">
-              @if (item.modal) {
-                <button
-                  type="button"
-                  appReveal="up"
-                  [revealDelay]="i * 80"
-                  class="group block w-full cursor-pointer text-left text-white"
-                  aria-haspopup="dialog"
-                  (click)="abrir(item, $event)"
-                >
-                  <ng-container *ngTemplateOutlet="conteudo; context: { $implicit: item }" />
-                </button>
-              } @else {
-                <a
-                  [routerLink]="item.rota"
-                  appReveal="up"
-                  [revealDelay]="i * 80"
-                  class="group block text-white no-underline"
-                >
-                  <ng-container *ngTemplateOutlet="conteudo; context: { $implicit: item }" />
-                </a>
-              }
-            </li>
-          } @empty {
-            @for (_ of esqueletos(); track $index) {
-              <li class="hidden lg:block" aria-hidden="true">
-                <div class="h-5 w-3/4 animate-pulse rounded bg-white/10"></div>
-                <div class="mt-3 h-3 w-full animate-pulse rounded bg-white/10"></div>
-                <div class="mt-2 h-3 w-2/3 animate-pulse rounded bg-white/10"></div>
-              </li>
-            }
+        <div class="relative min-w-0 flex-1">
+          @if (temCardAnterior()) {
+            <button
+              type="button"
+              class="group absolute left-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-brand-deep/90 text-white shadow-card outline-offset-2 transition-colors duration-fast ease-out hover:bg-accent focus-visible:outline-2 focus-visible:outline-accent motion-reduce:transition-none lg:flex"
+              aria-label="Percorrer cards anteriores"
+              aria-controls="hero-card-strip"
+              (click)="percorrerCards(-1)"
+            >
+              <span
+                aria-hidden="true"
+                class="block h-6 w-6 rotate-180 bg-current transition-transform duration-fast ease-out mask-[url(/assets/brand/chevron-right-svgrepo-com.svg)] mask-center mask-no-repeat mask-contain [-webkit-mask-image:url(/assets/brand/chevron-right-svgrepo-com.svg)] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain] group-hover:-translate-x-1 motion-reduce:transition-none"
+              ></span>
+            </button>
           }
-        </ul>
+
+          <ul
+            #faixaCards
+            id="hero-card-strip"
+            [class]="colunas()"
+            class="flex min-w-0 snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] lg:grid lg:gap-4 lg:overflow-x-auto lg:px-14 lg:pb-0 [&::-webkit-scrollbar]:hidden"
+            tabindex="0"
+            (scroll)="actualizarSetas()"
+          >
+            @for (item of itens(); track item.id; let i = $index) {
+              <li class="w-[82vw] shrink-0 snap-start sm:w-[43vw] lg:w-auto">
+                @if (item.modal) {
+                  <button
+                    type="button"
+                    appReveal="up"
+                    [revealDelay]="i * 80"
+                    class="group block min-h-40 w-full cursor-pointer rounded-sm border border-white/15 bg-white/4 p-4 text-left text-white outline-offset-4 transition-transform duration-base ease-out hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-accent motion-reduce:transition-none lg:min-h-44 lg:border-transparent lg:bg-transparent lg:p-3"
+                    aria-haspopup="dialog"
+                    (click)="abrir(item, $event)"
+                  >
+                    <ng-container *ngTemplateOutlet="conteudo; context: { $implicit: item }" />
+                  </button>
+                } @else {
+                  <a
+                    [routerLink]="item.rota"
+                    appReveal="up"
+                    [revealDelay]="i * 80"
+                    class="group block min-h-40 rounded-sm border border-white/15 bg-white/4 p-4 text-white no-underline outline-offset-4 transition-transform duration-base ease-out hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-accent motion-reduce:transition-none lg:min-h-44 lg:border-transparent lg:bg-transparent lg:p-3"
+                  >
+                    <ng-container *ngTemplateOutlet="conteudo; context: { $implicit: item }" />
+                  </a>
+                }
+              </li>
+            } @empty {
+              @for (_ of esqueletos(); track $index) {
+                <li class="hidden lg:block" aria-hidden="true">
+                  <div class="h-5 w-3/4 animate-pulse rounded bg-white/10"></div>
+                  <div class="mt-3 h-3 w-full rounded bg-white/10"></div>
+                  <div class="mt-2 h-3 w-2/3 rounded bg-white/10"></div>
+                </li>
+              }
+            }
+          </ul>
+
+          @if (temProximoCard()) {
+            <button
+              type="button"
+              class="group absolute right-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-brand-deep/90 text-white shadow-card outline-offset-2 transition-colors duration-fast ease-out hover:bg-accent focus-visible:outline-2 focus-visible:outline-accent motion-reduce:transition-none lg:flex"
+              aria-label="Percorrer próximos cards"
+              aria-controls="hero-card-strip"
+              (click)="percorrerCards(1)"
+            >
+              <span
+                aria-hidden="true"
+                class="block h-6 w-6 bg-current transition-transform duration-fast ease-out mask-[url(/assets/brand/chevron-right-svgrepo-com.svg)] mask-center mask-no-repeat mask-contain [-webkit-mask-image:url(/assets/brand/chevron-right-svgrepo-com.svg)] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain] group-hover:translate-x-1 motion-reduce:transition-none"
+              ></span>
+            </button>
+          }
+        </div>
       </div>
     </div>
   </div>
@@ -129,7 +178,7 @@
       >
     }
     <h2
-      class="font-display text-base font-bold leading-tight transition-colors duration-200 ease-out group-hover:text-accent-soft motion-reduce:transition-none"
+      class="font-display text-base font-bold leading-tight group-hover:text-accent-soft sm:text-lg"
       [class.mt-2]="item.etiqueta"
     >
       {{ item.titulo }}

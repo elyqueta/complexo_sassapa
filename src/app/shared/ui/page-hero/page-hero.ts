@@ -1,11 +1,25 @@
 import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
-import { Component, PLATFORM_ID, computed, effect, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  DestroyRef,
+  ElementRef,
+  PLATFORM_ID,
+  ViewChild,
+  afterNextRender,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SITE } from '../../../core/config/site.config';
 import { Ciclo } from '../../../core/models/ciclo';
 import { Evento } from '../../../core/models/evento';
 import { Noticia } from '../../../core/models/noticia';
 import { RevealDirective } from '../../directives/reveal/reveal.directive';
+import { RevealService } from '../../directives/reveal/reveal.service';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
 import {
@@ -34,6 +48,10 @@ export class PageHero {
   protected readonly eHome = computed(() => this.variant() === 'home');
   protected readonly anos = new Date().getFullYear() - SITE.anoFundacao;
   protected readonly aberto = signal<ItemFaixa | null>(null);
+  protected readonly temCardAnterior = signal(false);
+  protected readonly temProximoCard = signal(false);
+
+  @ViewChild('faixaCards') private readonly faixaCards?: ElementRef<HTMLUListElement>;
 
   protected readonly tituloLinhas = computed(() =>
     this.titulo().length ? this.titulo() : ['Educar com excelência,', 'formar com valores.'],
@@ -53,8 +71,12 @@ export class PageHero {
 
   protected readonly rotuloFaixa = computed(() => (this.eHome() ? 'Ensino' : 'Notícias'));
 
-  protected readonly colunas = computed(() => (this.eHome() ? 'lg:grid-cols-6' : 'lg:grid-cols-5'));
-  protected readonly esqueletos = computed(() => (this.eHome() ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5]));
+  protected readonly colunas = computed(() =>
+    this.eHome() ? 'lg:grid-cols-[repeat(6,minmax(20rem,1fr))]' : 'lg:grid-cols-5',
+  );
+  protected readonly esqueletos = computed(() =>
+    this.eHome() ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5],
+  );
 
   protected readonly itens = computed<ItemFaixa[]>(() => {
     if (this.eHome()) return this.itensHome();
@@ -71,9 +93,30 @@ export class PageHero {
   });
 
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly reveal = inject(RevealService);
   private gatilho: HTMLElement | null = null;
 
   constructor() {
+    afterNextRender(() => {
+      const faixa = this.faixaCards?.nativeElement;
+      if (!faixa || !isPlatformBrowser(this.platformId)) return;
+
+      const actualizar = () => this.actualizarSetas();
+      const resizeObserver = new ResizeObserver(actualizar);
+      const mutationObserver = new MutationObserver(actualizar);
+
+      resizeObserver.observe(faixa);
+      mutationObserver.observe(faixa, { childList: true });
+      actualizar();
+
+      this.destroyRef.onDestroy(() => {
+        resizeObserver.disconnect();
+        mutationObserver.disconnect();
+      });
+    });
+
     // Modal aberto: bloqueia o scroll e foca o botão de fechar.
     effect((onCleanup) => {
       if (!this.aberto() || !isPlatformBrowser(this.platformId)) return;
@@ -84,6 +127,29 @@ export class PageHero {
         document.body.style.overflow = anterior;
         window.clearTimeout(timer);
       });
+    });
+  }
+
+  protected actualizarSetas(): void {
+    const faixa = this.faixaCards?.nativeElement;
+    if (!faixa) return;
+
+    const primeiroCard = faixa.querySelector('li');
+    const inicioDoTrilho = primeiroCard?.offsetLeft ?? 0;
+    this.temCardAnterior.set(faixa.scrollLeft > inicioDoTrilho + 1);
+    this.temProximoCard.set(faixa.scrollLeft + faixa.clientWidth < faixa.scrollWidth - 1);
+    this.changeDetector.markForCheck();
+  }
+
+  protected percorrerCards(direccao: -1 | 1): void {
+    const faixa = this.faixaCards?.nativeElement;
+    if (!faixa) return;
+
+    const larguraCard =
+      faixa.querySelector('li')?.getBoundingClientRect().width ?? faixa.clientWidth;
+    faixa.scrollBy({
+      left: direccao * (larguraCard + 16),
+      behavior: this.reveal.reducedMotion ? 'auto' : 'smooth',
     });
   }
 
@@ -126,9 +192,7 @@ export class PageHero {
     }));
 
     const formacoes = [...new Set(todos.flatMap((c) => c.formacoes))];
-    const ferias = todos
-      .filter((c) => c.planoFerias)
-      .map((c) => `${c.nome}: ${c.planoFerias}`);
+    const ferias = todos.filter((c) => c.planoFerias).map((c) => `${c.nome}: ${c.planoFerias}`);
 
     return [
       ...porCiclo,
