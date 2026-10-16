@@ -1,20 +1,18 @@
 import { AfterViewInit, Component, PLATFORM_ID, inject, input, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { IconName } from '../icon/icon.constants';
-import { Icon } from '../icon/icon';
 import { RevealService } from '../../directives/reveal/reveal.service';
 
 export interface SeccaoDot {
   id: string;
   label: string;
-  icon: IconName;
+  /** Caminho do SVG em assets (ex.: /assets/brand/schedule-svgrepo-com.svg). */
+  icon: string;
 }
 
-/** Navegação lateral por pontos (só ≥ 1024px), sincronizada por IntersectionObserver. */
+/** Barra lateral de secções (só ≥ 1024px), sincronizada por IntersectionObserver. */
 @Component({
   selector: 'app-section-dots',
   standalone: true,
-  imports: [Icon],
   templateUrl: './section-dots.html',
 })
 export class SectionDots implements AfterViewInit {
