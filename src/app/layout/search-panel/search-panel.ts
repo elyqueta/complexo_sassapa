@@ -18,8 +18,8 @@ import { Icon } from '../../shared/ui/icon/icon';
 @Component({
   selector: 'app-search-panel',
   standalone: true,
-  imports: [Icon, RouterLink],
   templateUrl: './search-panel.html',
+  imports: [RouterLink, Icon],
 })
 export class SearchPanel {
   @ViewChild('searchInput') private searchInput?: ElementRef<HTMLInputElement>;

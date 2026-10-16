@@ -1,7 +1,11 @@
 <div
   id="search-panel"
-  class="fixed inset-0 z-[60]"
-  [class.hidden]="!aberto()"
+  class="fixed inset-0 z-[60] transition-opacity duration-200 ease-out motion-reduce:transition-none"
+  [class.invisible]="!aberto()"
+  [class.pointer-events-none]="!aberto()"
+  [class.opacity-0]="!aberto()"
+  [attr.aria-hidden]="!aberto()"
+  [attr.inert]="!aberto() ? '' : null"
   (keydown)="onKeydown($event)"
 >
   <button
@@ -12,13 +16,16 @@
   ></button>
 
   <section
-    class="absolute inset-x-0 top-header border-b border-line bg-surface"
+    class="absolute left-1/2 top-[calc(var(--spacing-header)+0.75rem)] w-[min(40rem,calc(100%-2rem))] max-h-[min(70svh,34rem)] -translate-x-1/2 overflow-y-auto border border-line bg-surface shadow-float transition-[opacity,transform] duration-[240ms] ease-out motion-reduce:transition-none"
+    [class.opacity-0]="!aberto()"
+    [class.-translate-y-2]="!aberto()"
+    [class.scale-[0.97]]="!aberto()"
     role="dialog"
     aria-modal="true"
     aria-label="Pesquisar no site"
   >
-    <div class="mx-auto max-w-container px-4 py-8 sm:px-6 lg:px-10">
-      <div class="flex items-center gap-4 border-b border-line pb-4">
+    <div class="mx-auto max-w-container px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+      <div class="flex items-center gap-4 border-b border-line pb-3">
         <label for="site-search" class="sr-only">Pesquisar</label>
         <input
           #searchInput
@@ -32,7 +39,7 @@
           [value]="query()"
           (input)="onInput($event)"
           placeholder="O que procura?"
-          class="min-w-0 flex-1 border-0 bg-transparent font-display text-h2 text-ink outline-none placeholder:text-ink-3"
+          class="min-w-0 flex-1 border-0 bg-transparent font-display text-lg text-ink outline-none placeholder:text-ink-3 sm:text-h3"
         />
         <button
           type="button"
@@ -60,14 +67,14 @@
                         role="option"
                         [id]="resultado.id"
                         [attr.aria-selected]="indexOf(resultado.id) === resultadoActivo()"
-                        class="w-full border-b border-line py-3 text-left"
+                        class="w-full border-b border-line py-2.5 text-left"
                         [class.bg-surface-tint]="indexOf(resultado.id) === resultadoActivo()"
                         (click)="escolher(resultado.id)"
                       >
                         <span class="block font-display text-base font-bold text-ink">
                           {{ resultado.title }}
                         </span>
-                        <span class="mt-1 block text-sm leading-relaxed text-ink-2">
+                        <span class="mt-0.5 block text-sm leading-relaxed text-ink-2">
                           {{ resultado.description }}
                         </span>
                       </button>

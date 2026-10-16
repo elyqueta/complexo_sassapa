@@ -1,0 +1,62 @@
+<app-page-hero
+  [noticias]="noticias()"
+  [eventos]="eventos()"
+  variant="noticias"
+  [titulo]="['Notícias do', 'colégio']"
+  [subtitulo]="'Acompanhe as últimas novidades, actividades e conquistas dos nossos alunos.'"
+/>
+
+<section id="lista-noticias" class="border-t border-line py-14 lg:py-20">
+  <app-container>
+    <div class="flex items-baseline justify-between gap-4">
+      <div>
+        <span class="block h-[3px] w-12 bg-accent" aria-hidden="true"></span>
+        <h2 class="mt-4 font-display text-h2 font-bold text-ink">Todas as notícias</h2>
+      </div>
+      <app-vertical-label label="Notícias" />
+    </div>
+
+    <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      @for (noticia of noticias(); track noticia.id) {
+        <a
+          [routerLink]="['/noticias']"
+          class="group flex flex-col gap-4 rounded-md border border-line bg-surface p-4 no-underline shadow-sm transition-shadow duration-base ease-out motion-reduce:transition-none hover:shadow-md"
+        >
+          <div class="relative aspect-[25/17] overflow-hidden rounded-sm">
+            @if (noticia.imagem) {
+              <app-media-image
+                [src]="noticia.imagem"
+                [alt]="noticia.imagemAlt || noticia.titulo"
+                aspect="wide"
+                sizes="(max-width: 1023px) 80vw, 33vw"
+                class="transition-transform duration-base ease-out group-hover:scale-[1.02] motion-reduce:transition-none"
+              />
+            } @else {
+              <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand to-brand-deep">
+                <app-logo variant="mark" tone="mono" [decorative]="true" class="h-12 w-12 opacity-20" />
+              </div>
+            }
+            <span class="absolute right-3 top-3">
+              <app-category-tag [label]="noticia.categoria" tone="chip" />
+            </span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <h3 class="font-display text-h3 font-bold text-ink">{{ noticia.titulo }}</h3>
+            <p class="line-clamp-2 text-sm leading-relaxed text-ink-2">{{ noticia.resumo }}</p>
+            <span class="font-display text-label font-bold uppercase tracking-[0.06em] text-ink-3">{{
+              noticia.data
+            }}</span>
+          </div>
+        </a>
+      } @empty {
+        <div class="flex flex-col items-center justify-center py-12">
+          <app-vertical-label label="Notícias" />
+          <p class="mt-4 text-center text-ink-2">
+            Ainda não há notícias publicadas.<br class="hidden sm:block" />
+            Volte em breve para conhecer as novidades do colégio.
+          </p>
+        </div>
+      }
+    </div>
+  </app-container>
+</section>

@@ -44,7 +44,7 @@ export class HeaderScrollService {
 
       const updateRouteState = (): void => {
         const path = this.router.url.split(/[?#]/, 1)[0];
-        this.home.set(path === '/');
+        this.home.set(path === '/' || path === '/noticias');
         this.isHidden.set(false);
         this.anchorNavigation.set(false);
         this.atTop.set(true);

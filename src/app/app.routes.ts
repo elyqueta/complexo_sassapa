@@ -20,7 +20,7 @@ export const routes: Routes = [
   },
   {
     path: 'noticias',
-    loadComponent: () => import('./pages/coming-soon/coming-soon.page').then((m) => m.ComingSoon),
+    loadComponent: () => import('./pages/noticias/noticias.page').then((m) => m.Noticias),
   },
   {
     path: 'inscricoes',

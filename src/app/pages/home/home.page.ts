@@ -5,7 +5,7 @@ import { Estatistica } from '../../core/models/estatistica';
 import { NoticiasService } from '../../core/services/noticias.service';
 import { EventosService } from '../../core/services/eventos.service';
 import { EstatisticasService } from '../../core/services/estatisticas.service';
-import { Hero } from './sections/hero/hero';
+import { PageHero } from '../../shared/ui/page-hero/page-hero';
 import { Agenda } from './sections/agenda/agenda';
 import { VideoSection } from './sections/video/video';
 import { StatsSection } from './sections/stats/stats';
@@ -14,7 +14,7 @@ import { SectionDots, SeccaoDot } from '../../shared/ui/section-dots/section-dot
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Hero, Agenda, VideoSection, StatsSection, SectionDots],
+  imports: [PageHero, Agenda, VideoSection, StatsSection, SectionDots],
   templateUrl: './home.page.html',
 })
 export class Home {
@@ -35,7 +35,6 @@ export class Home {
   private readonly estatisticasService = inject(EstatisticasService);
 
   constructor() {
-    // Camada de dados: hoje mock, amanhã a API do backoffice (só muda o serviço).
     this.noticiasService.listar().then((dados) => this.noticias.set(dados));
     this.eventosService.listar().then((dados) => this.eventos.set(dados));
     this.estatisticasService.listar().then((dados) => this.estatisticas.set(dados));

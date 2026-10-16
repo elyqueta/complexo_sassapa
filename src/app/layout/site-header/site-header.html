@@ -16,7 +16,7 @@
   ></span>
 
   <div
-    class="relative z-10 mx-auto grid h-header w-full max-w-container grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 sm:px-6 lg:grid-cols-[minmax(0,31%)_minmax(0,1fr)_112px] lg:px-0"
+    class="relative z-10 mx-auto grid h-header w-full grid-cols-[minmax(0,1fr)_auto] items-center px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:pl-[6.25%] lg:pr-[5.5%]"
   >
     <a
       routerLink="/"
@@ -24,14 +24,17 @@
       aria-label="Complexo Escolar Privado Sassapa — início"
     >
       <app-logo variant="mark" [tone]="logoTone()" class="h-10 w-9 shrink-0" />
-      <span class="flex min-w-0 flex-col font-display text-nav font-bold uppercase leading-tight tracking-wider">
+      <span class="flex min-w-0 flex-col font-display text-nav font-bold uppercase leading-tight tracking-wider transition-colors duration-300 ease-out motion-reduce:transition-none"
+        [class.text-white]="!isSolid()"
+        [class.text-ink]="isSolid()"
+      >
         <span class="whitespace-nowrap">Complexo Escolar</span>
         <span class="whitespace-nowrap">Privado Sassapa</span>
       </span>
     </a>
 
     <nav
-      class="hidden min-w-0 items-center justify-around lg:flex"
+      class="hidden min-w-0 items-center justify-around lg:absolute lg:inset-y-0 lg:left-[32.5%] lg:right-[15.2%] lg:flex"
       aria-label="Navegação principal"
     >
       @for (item of navItems; track item.rota) {
@@ -54,7 +57,7 @@
       }
     </nav>
 
-    <div class="flex items-center justify-self-end gap-3">
+    <div class="flex items-center justify-self-end gap-[clamp(1.5rem,2.3vw,2.5rem)]">
       <button
         id="header-search"
         type="button"
