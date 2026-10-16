@@ -9,9 +9,10 @@
 >
   <span><ng-content></ng-content></span>
   @if (arrow()) {
-    <app-icon
-      name="arrow-right"
-      class="transition-transform duration-fast ease-out group-hover:translate-x-1 motion-reduce:transition-none"
-    />
+    <!-- Máscara: o SVG dos assets herda a cor do texto do botão (currentColor). -->
+    <span
+      aria-hidden="true"
+      class="block h-6 w-6 shrink-0 bg-current transition-transform duration-fast ease-out [mask-image:url(/assets/brand/chevron-right-svgrepo-com.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url(/assets/brand/chevron-right-svgrepo-com.svg)] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain] group-hover:translate-x-1 motion-reduce:transition-none"
+    ></span>
   }
 </a>
