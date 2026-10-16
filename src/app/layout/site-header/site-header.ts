@@ -2,7 +2,6 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NAV_ITEMS } from '../../core/config/site.config';
 import { UiStateService } from '../../core/services/ui-state.service';
-import { Icon } from '../../shared/ui/icon/icon';
 import { Logo } from '../../shared/ui/logo/logo';
 import { SearchPanel } from '../search-panel/search-panel';
 import { HeaderScrollService } from './header-scroll.service';
@@ -10,7 +9,7 @@ import { HeaderScrollService } from './header-scroll.service';
 @Component({
   selector: 'app-site-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, Icon, Logo, SearchPanel],
+  imports: [RouterLink, RouterLinkActive, Logo, SearchPanel],
   templateUrl: './site-header.html',
 })
 export class SiteHeader {

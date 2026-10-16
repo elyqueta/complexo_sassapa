@@ -61,7 +61,7 @@
       <button
         id="header-search"
         type="button"
-        class="flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-fast ease-out hover:bg-surface-soft motion-reduce:transition-none"
+        class="flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-fast ease-out hover:bg-surface-soft/30 cursor-pointer motion-reduce:transition-none"
         [class.text-ink]="isSolid()"
         [class.text-white]="!isSolid()"
         [attr.aria-expanded]="pesquisaAberta()"
@@ -69,13 +69,19 @@
         aria-label="Pesquisar no site"
         (click)="alternarPesquisa()"
       >
-        <app-icon name="search" />
+        <img
+          src="/assets/brand/search-svgrepo-com.svg"
+          alt=""
+          aria-hidden="true"
+          class="h-5 w-5 transition-[filter] duration-fast ease-out motion-reduce:transition-none"
+          [class.invert]="!isSolid()"
+        />
       </button>
 
       <button
         id="header-menu-toggle"
         type="button"
-        class="flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-fast ease-out hover:bg-surface-soft motion-reduce:transition-none"
+        class="flex h-10 w-10 items-center justify-center rounded-sm transition-colors duration-fast ease-out hover:bg-surface-soft/30 cursor-pointer motion-reduce:transition-none"
         [class.text-ink]="isSolid()"
         [class.text-white]="!isSolid()"
         [attr.aria-expanded]="menuAberto()"
@@ -83,7 +89,15 @@
         aria-label="Abrir menu"
         (click)="alternarMenu()"
       >
-        <app-icon [name]="menuAberto() ? 'close' : 'menu'" />
+        <img
+          [src]="menuAberto()
+            ? '/assets/brand/close-svgrepo-com.svg'
+            : '/assets/brand/menu-svgrepo-com.svg'"
+          alt=""
+          aria-hidden="true"
+          class="h-5 w-5 transition-[filter] duration-fast ease-out motion-reduce:transition-none"
+          [class.invert]="!isSolid()"
+        />
       </button>
     </div>
   </div>
