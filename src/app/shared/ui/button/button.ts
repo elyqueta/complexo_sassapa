@@ -6,7 +6,7 @@ import { Icon } from '../icon/icon';
 @Component({
   selector: 'app-button',
   standalone: true,
-  imports: [RouterLink, Icon],
+  imports: [RouterLink],
   templateUrl: './button.html',
 })
 export class Button {
