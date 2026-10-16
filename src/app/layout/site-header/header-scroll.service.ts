@@ -47,6 +47,7 @@ export class HeaderScrollService {
         this.home.set(path === '/' || path === '/noticias');
         this.isHidden.set(false);
         this.anchorNavigation.set(false);
+        this.headerFocused.set(false);
         this.atTop.set(true);
         lastY = 0;
         accumulatedDelta = 0;
@@ -69,13 +70,15 @@ export class HeaderScrollService {
         if (
           this.ui.menuMobileAberto() ||
           this.ui.pesquisaAberta() ||
-          this.headerFocused() ||
           this.anchorNavigation()
         ) {
           this.isHidden.set(false);
           accumulatedDelta = 0;
           return;
         }
+
+        // Scroll real = o utilizador saiu do cabeçalho; o foco deixa de o manter visível.
+        if (delta !== 0 && this.headerFocused()) this.headerFocused.set(false);
 
         const direction = Math.sign(delta);
         if (direction && direction !== lastDirection) accumulatedDelta = 0;
@@ -123,14 +126,23 @@ export class HeaderScrollService {
           window.clearTimeout(anchorTimer);
         });
 
+      // Só foco de teclado mantém o header visível. Cliques (pesquisa/menu) deixam o foco
+      // no botão do header e, sem esta verificação, o header ficava preso para sempre.
       fromEvent<FocusEvent>(document, 'focusin')
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((event) => {
           const target = event.target;
-          const focused = target instanceof Element && Boolean(target.closest('#site-header'));
+          const focused =
+            target instanceof Element &&
+            target.closest('#site-header') !== null &&
+            target.matches(':focus-visible');
           this.headerFocused.set(focused);
           if (focused) this.isHidden.set(false);
         });
+
+      fromEvent<FocusEvent>(document, 'focusout')
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.headerFocused.set(false));
     });
   }
 }
